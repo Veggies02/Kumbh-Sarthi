@@ -38,6 +38,20 @@ export interface PilgrimProfile {
 // Mhaske Family Presets directly matching app's family group
 const MHASKE_FAMILY_PRESETS: PilgrimProfile[] = [
   {
+    id: 'sahil-me',
+    name: 'Sahil Mhaske (You)',
+    relationTag: 'Me (Student / Builder)',
+    age: 21,
+    gender: 'Male',
+    bloodGroup: 'B+ Positive',
+    medicalConditions: 'Active student / Nil medical risks',
+    emergencyContactName: 'Vinod Mhaske (Dad)',
+    emergencyContactPhone: '+919822011223',
+    preferredLanguage: 'English, Marathi & Hindi',
+    baseCampLocation: 'MET Bhujbal Knowledge City (Adgaon, Nashik)',
+    kumbhId: 'KMB-2027-SAHIL-01'
+  },
+  {
     id: 'dad-vinod',
     name: 'Vinod Mhaske',
     relationTag: 'Dad / Father',

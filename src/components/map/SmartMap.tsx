@@ -22,21 +22,40 @@ interface SmartMapProps {
 export const getCategoryFallbackImage = (category?: string) => {
   switch (category) {
     case 'temple':
-      return 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80';
+      // Sacred Indian stone temple
+      return 'https://images.unsplash.com/photo-1600100397608-f010e42e0e01?auto=format&fit=crop&w=800&q=80';
     case 'ghat':
-      return 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80';
+      // Holy river ghat steps with bathing pilgrims
+      return 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80';
     case 'food':
-      return 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=800&q=80';
+      // Satvik Indian thali / fresh mahaprasad meals
+      return 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80';
     case 'accommodation':
-      return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+      // Dignified pilgrim dharamshala / ashram guest room
+      return 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80';
     case 'water':
-      return 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80';
+      // Pure chilled RO drinking water kiosk / seva dispenser
+      return 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=800&q=80';
     case 'parking':
-      return 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80';
+      // Designated transit parking ground
+      return 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=800&q=80';
     case 'medical':
+      // 24x7 Emergency first aid / medical triage clinic
       return 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80';
+    case 'toilet':
+      // Modern sanitized public washroom & bio-toilets complex
+      return 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80';
+    case 'police':
+      // Police security assistance booth & helpline
+      return 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80';
+    case 'transport':
+      // Green electric shuttle bus / MSRTC transit station
+      return 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80';
+    case 'emergency':
+      // Emergency ambulance & hospital unit
+      return 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80';
     default:
-      return 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80';
+      return 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80';
   }
 };
 
@@ -62,6 +81,8 @@ export const SmartMap: React.FC<SmartMapProps> = ({
     routes,
     selectedRouteId,
     origin,
+    setOrigin,
+    setActiveTab,
     trackLiveLocation,
     isTrackingLive,
     t
@@ -197,13 +218,22 @@ export const SmartMap: React.FC<SmartMapProps> = ({
             <div class="font-medium text-[11px]">📍 ${member.locationNote}</div>
             <div class="text-[10px] text-slate-400 mt-1">Status: ${member.status.toUpperCase()} • Ping: ${member.lastSeenTime}</div>
           </div>
-          <button 
-            onclick="window.__navigateToFamilyMember && window.__navigateToFamilyMember('${member.id}')"
-            class="w-full py-1.5 px-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow transition-colors flex items-center justify-center gap-1.5"
-          >
-            <span>🧭</span>
-            <span>Navigate to ${member.name.split(' ')[0]}</span>
-          </button>
+          <div class="flex flex-col gap-1.5 pt-1">
+            <button 
+              onclick="window.__navigateToFamilyMember && window.__navigateToFamilyMember('${member.id}')"
+              class="w-full py-1.5 px-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>🧭</span>
+              <span>Navigate to ${member.name.split(' ')[0]}</span>
+            </button>
+            <button 
+              onclick="window.__setRouteOriginFromMember && window.__setRouteOriginFromMember('${member.id}')"
+              class="w-full py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg text-xs shadow transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>🚀</span>
+              <span>Route FROM ${member.name.split(' ')[0]}'s Location</span>
+            </button>
+          </div>
         </div>
       `;
 
@@ -240,10 +270,25 @@ export const SmartMap: React.FC<SmartMapProps> = ({
         });
       }
     };
+
+    (window as any).__setRouteOriginFromMember = (memberId: string) => {
+      const found = familyMembers.find(m => m.id === memberId);
+      if (found) {
+        setOrigin({
+          lat: found.lat,
+          lng: found.lng,
+          name: `${found.name} (${found.locationNote})`,
+          isLiveGps: true
+        });
+        setActiveTab('navigation');
+      }
+    };
+
     return () => {
       delete (window as any).__navigateToFamilyMember;
+      delete (window as any).__setRouteOriginFromMember;
     };
-  }, [familyMembers, navigateToPlace]);
+  }, [familyMembers, navigateToPlace, setOrigin, setActiveTab]);
 
   // 2. Render Crowd Zones Layer
   useEffect(() => {

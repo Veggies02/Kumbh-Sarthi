@@ -20,6 +20,7 @@ export const SmartNavigation: React.FC = () => {
   const {
     places,
     origin,
+    setOrigin,
     destination,
     setDestination,
     persona,
@@ -34,6 +35,8 @@ export const SmartNavigation: React.FC = () => {
     setOriginPreset,
     trackLiveLocation,
     isTrackingLive,
+    familyMembers,
+    currentUser,
     language,
     t
   } = useKumbh();
@@ -235,61 +238,118 @@ export const SmartNavigation: React.FC = () => {
 
               {/* Origin Switcher Dropdown */}
               {showOriginDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-slate-200 z-50 divide-y divide-slate-100 overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOriginPreset('met-bhujbal');
-                      setShowOriginDropdown(false);
-                    }}
-                    className="w-full px-3 py-2 text-left text-xs hover:bg-blue-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-900">MET Bhujbal Knowledge City</div>
-                      <div className="text-[10px] text-slate-500">Adgaon, Nashik (Campus Base)</div>
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 divide-y divide-slate-100 overflow-hidden max-h-80 overflow-y-auto">
+                  
+                  {/* Family Members Section */}
+                  {familyMembers && familyMembers.length > 0 && (
+                    <div className="bg-slate-50/80 p-2">
+                      <div className="px-2 py-1 text-[10px] font-black uppercase tracking-wider text-saffron-700 flex items-center space-x-1">
+                        <span>👨‍👩‍👧‍👦</span>
+                        <span>Route From Family Member's Location:</span>
+                      </div>
+                      <div className="space-y-1 mt-1">
+                        {familyMembers.map((member) => {
+                          const isCurrent = currentUser?.id === member.id;
+                          return (
+                            <button
+                              key={member.id}
+                              type="button"
+                              onClick={() => {
+                                setOrigin({
+                                  lat: member.lat,
+                                  lng: member.lng,
+                                  name: `${member.name} (${member.locationNote})`,
+                                  isLiveGps: true
+                                });
+                                setShowOriginDropdown(false);
+                              }}
+                              className={`w-full p-2 text-left rounded-xl text-xs flex items-center justify-between transition-all ${
+                                origin.lat === member.lat && origin.lng === member.lng
+                                  ? 'bg-saffron-100/80 border border-saffron-300 font-bold text-slate-900'
+                                  : 'hover:bg-white border border-transparent text-slate-700'
+                              }`}
+                            >
+                              <div className="flex items-center space-x-2">
+                                <span className="w-6 h-6 rounded-full bg-saffron-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0 shadow-xs">
+                                  {member.badgeText || member.relation[0]}
+                                </span>
+                                <div>
+                                  <div className="font-bold text-slate-900 text-[11px] flex items-center space-x-1">
+                                    <span>{member.name}</span>
+                                    {isCurrent && (
+                                      <span className="text-[8px] bg-emerald-100 text-emerald-800 font-black px-1 rounded">Active</span>
+                                    )}
+                                  </div>
+                                  <div className="text-[10px] text-slate-500">{member.locationNote}</div>
+                                </div>
+                              </div>
+                              <span className="text-[9px] text-saffron-700 font-semibold shrink-0">Select</span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded">Selected Base</span>
-                  </button>
+                  )}
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOriginPreset('panchavati-stand');
-                      setShowOriginDropdown(false);
-                    }}
-                    className="w-full px-3 py-2 text-left text-xs hover:bg-blue-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-900">Panchavati Malegaon Stand</div>
-                      <div className="text-[10px] text-slate-500">Central Nashik Pilgrim Station</div>
+                  <div className="p-2 space-y-1">
+                    <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Standard Kumbh Transit Hubs:
                     </div>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOriginPreset('met-bhujbal');
+                        setShowOriginDropdown(false);
+                      }}
+                      className="w-full px-2.5 py-1.5 text-left text-xs hover:bg-blue-50 rounded-xl flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-bold text-slate-900 text-[11px]">MET Bhujbal Knowledge City</div>
+                        <div className="text-[10px] text-slate-500">Adgaon, Nashik (Campus Base)</div>
+                      </div>
+                      <span className="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded">Campus</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOriginPreset('tapovan-parking');
-                      setShowOriginDropdown(false);
-                    }}
-                    className="w-full px-3 py-2 text-left text-xs hover:bg-blue-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-900">Tapovan Satellite Mega Parking P1</div>
-                      <div className="text-[10px] text-slate-500">Long-distance transit terminal</div>
-                    </div>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOriginPreset('panchavati-stand');
+                        setShowOriginDropdown(false);
+                      }}
+                      className="w-full px-2.5 py-1.5 text-left text-xs hover:bg-blue-50 rounded-xl flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-bold text-slate-900 text-[11px]">Panchavati Malegaon Stand</div>
+                        <div className="text-[10px] text-slate-500">Central Nashik Pilgrim Station</div>
+                      </div>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      trackLiveLocation();
-                      setShowOriginDropdown(false);
-                    }}
-                    className="w-full px-3 py-2 text-left text-xs bg-blue-50/70 hover:bg-blue-100 text-blue-900 font-bold flex items-center space-x-1.5"
-                  >
-                    <span>🎯</span>
-                    <span>Use Device GPS Live Coordinates</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOriginPreset('tapovan-parking');
+                        setShowOriginDropdown(false);
+                      }}
+                      className="w-full px-2.5 py-1.5 text-left text-xs hover:bg-blue-50 rounded-xl flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-bold text-slate-900 text-[11px]">Tapovan Satellite Mega Parking P1</div>
+                        <div className="text-[10px] text-slate-500">Long-distance transit terminal</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        trackLiveLocation();
+                        setShowOriginDropdown(false);
+                      }}
+                      className="w-full px-2.5 py-1.5 text-left text-xs bg-blue-50/70 hover:bg-blue-100 text-blue-900 font-bold rounded-xl flex items-center space-x-1.5 mt-1"
+                    >
+                      <span>🎯</span>
+                      <span>Use Device GPS Live Coordinates</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

@@ -11,8 +11,7 @@ export const BottomNav: React.FC = () => {
     { id: 'navigation', label: t('navRoutes'), icon: Navigation },
     { id: 'facilities', label: t('navFacilities'), icon: Compass },
     { id: 'assistant', label: t('navAssistant'), icon: Bot },
-    { id: 'emergency', label: 'SOS', icon: AlertTriangle, isAlert: true },
-    { id: 'admin', label: 'Admin', icon: SlidersHorizontal }
+    { id: 'emergency', label: 'SOS', icon: AlertTriangle, isAlert: true }
   ];
 
   return (

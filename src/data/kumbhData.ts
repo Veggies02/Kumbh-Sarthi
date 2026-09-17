@@ -926,6 +926,7 @@ export const INITIAL_PLACES: Place[] = [
     lat: 20.0468,
     lng: 73.8582,
     locationName: 'Adgaon, Nashik (NH60 Mumbai-Agra Highway)',
+    imageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
     description: 'Major student volunteer information desk, resting pavilion, device charging hub, and shuttle boarding node.',
     facilities: ['Pilgrim Assistance Booth', 'Mobile Charging Station', 'Drinking Water RO', 'First Aid Station', 'Volunteer Desks'],
     accessibility: {
@@ -1260,6 +1261,7 @@ export const INITIAL_PLACES: Place[] = [
     lat: 20.0460,
     lng: 73.8575,
     locationName: 'MET Campus Gate 2, Adgaon, Nashik',
+    imageUrl: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
     description: 'Student- and community-operated 24/7 kitchen providing free nutritious meals, snacks, and warm milk for toddlers and senior pilgrims.',
     facilities: ['Hot Fresh Meals', 'Tea & Milk for Children', 'Spacious Seating for 800', 'Clean Washrooms'],
     accessibility: {
@@ -1416,6 +1418,7 @@ export const INITIAL_PLACES: Place[] = [
     lat: 20.0465,
     lng: 73.8580,
     locationName: 'Main Entry Plaza, MET Campus, Adgaon',
+    imageUrl: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=800&q=80',
     description: 'Free mineral RO cold water refilling point with shaded resting benches at the northern Nashik highway entry gate.',
     facilities: ['Mineral RO Water', 'Electrolytes & First Aid', 'Shaded Seating', 'Restrooms'],
     accessibility: {
@@ -2179,6 +2182,18 @@ export const INITIAL_CROWD_ZONES: CrowdZone[] = [
 
 export const MOCK_FAMILY_MEMBERS = [
   {
+    id: 'member-me',
+    name: 'Sahil Mhaske (You)',
+    relation: 'Me',
+    lat: 20.0468,
+    lng: 73.8582,
+    batteryLevel: 96,
+    lastSeenTime: 'Active now',
+    status: 'safe' as const,
+    locationNote: 'MET Bhujbal Knowledge City (Adgaon)',
+    badgeText: 'S'
+  },
+  {
     id: 'member-1',
     name: 'Dad (Vinod Mhaske)',
     relation: 'Father',
@@ -2214,5 +2229,17 @@ export const MOCK_FAMILY_MEMBERS = [
     status: 'moving' as const,
     locationNote: 'West Anandvalli, Gangapur Road',
     badgeText: 'Y'
+  },
+  {
+    id: 'member-4',
+    name: 'Dattatraya Mhaske (Grandpa)',
+    relation: 'Grandfather',
+    lat: 20.0010,
+    lng: 73.8180,
+    batteryLevel: 42,
+    lastSeenTime: '3 mins ago',
+    status: 'safe' as const,
+    locationNote: 'Tapovan Sadhugram, Sector 4, Tent B-12',
+    badgeText: 'D'
   }
 ];

@@ -27,7 +27,9 @@ export const AdminDashboard: React.FC = () => {
     triggerCrowdSurge,
     resetCrowdSimulation,
     isSurgeActive,
-    setActiveTab
+    setActiveTab,
+    currentUser,
+    setIsAuthModalOpen
   } = useKumbh();
 
   // Total active simulated pilgrims
@@ -39,38 +41,71 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       
-      {/* Control Center Banner */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-purple-900/40 relative overflow-hidden">
+      {/* Official Police ICCC Tactical Command Banner */}
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-indigo-500/30 relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30 mb-2">
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Hackathon Judge Control Center • Crowd Simulator</span>
+            <div className="flex items-center space-x-2 flex-wrap gap-y-1 mb-2">
+              <span className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-rose-600/30 border border-rose-500/50 text-rose-300 text-xs font-black uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping mr-1" />
+                RESTRICTED OFFICIAL ACCESS • ICCC WAR ROOM
+              </span>
+              <span className="text-[11px] font-mono font-bold text-indigo-300 bg-indigo-900/60 px-2.5 py-0.5 rounded-full border border-indigo-700">
+                Jurisdiction: Panchavati & Ram Kund
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Kumbh Crowd Control & Density Simulation
+
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center space-x-2">
+              <span>Maharashtra Police ICCC Command Center</span>
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-              Simulate real-time pedestrian surges to observe dynamic recalculations in the Pilgrim Smart Navigation engine.
+
+            <p className="text-xs sm:text-sm text-indigo-200/80 mt-1 max-w-2xl leading-relaxed">
+              Real-time crowd physics, AI edge vision surveillance wall, autonomous corridor diverters, and crowd surge stress-testing for Kumbh Mela 2026.
             </p>
+
+            <div className="flex items-center space-x-3 mt-3 text-xs text-slate-300">
+              <span className="font-semibold">
+                Officer on Duty: <strong className="text-amber-300">{currentUser.name}</strong>
+              </span>
+              <span>•</span>
+              <span className="font-mono text-slate-400">
+                Badge: <strong>{currentUser.badgeNumber || 'MH-15-POLICE-041'}</strong>
+              </span>
+            </div>
           </div>
 
-          {/* Quick Trigger Buttons */}
-          <div className="flex items-center space-x-3 self-start sm:self-auto">
+          {/* Quick Trigger & Navigation Buttons */}
+          <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+            <button
+              onClick={() => setActiveTab('home')}
+              className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-4 py-2.5 rounded-xl border border-slate-700 text-xs flex items-center space-x-1.5 transition-all shadow-sm"
+              title="Return to Pilgrim Mobile View"
+            >
+              <span>← Back to Pilgrim App</span>
+            </button>
+
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="bg-indigo-900/80 hover:bg-indigo-800 text-indigo-200 font-bold px-3.5 py-2.5 rounded-xl border border-indigo-700 text-xs flex items-center space-x-1.5 transition-all"
+              title="Switch Officer / Account"
+            >
+              <span>Switch User</span>
+            </button>
+
             <button
               onClick={triggerCrowdSurge}
-              className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold px-5 py-3 rounded-2xl shadow-lg flex items-center space-x-2 text-sm transition-all transform active:scale-95 animate-pulse"
+              className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black px-4 sm:px-5 py-2.5 rounded-xl shadow-lg flex items-center space-x-2 text-xs sm:text-sm transition-all transform active:scale-95 animate-pulse"
             >
               <Zap className="w-4 h-4 text-amber-300" />
-              <span>SIMULATE CROWD SURGE</span>
+              <span>SIMULATE SURGE</span>
             </button>
 
             <button
               onClick={resetCrowdSimulation}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold px-4 py-3 rounded-2xl border border-slate-700 text-xs flex items-center space-x-1.5 transition-all"
+              className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold px-3 py-2.5 rounded-xl border border-slate-700 text-xs flex items-center space-x-1 transition-all"
               title="Reset to Normal Conditions"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Reset</span>
             </button>
           </div>
@@ -78,18 +113,18 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Surge Status Callout */}
         {isSurgeActive && (
-          <div className="mt-4 p-3.5 bg-rose-950/80 border border-rose-500/60 rounded-2xl flex items-center justify-between gap-3 text-xs text-rose-200">
+          <div className="mt-4 p-3.5 bg-rose-950/90 border border-rose-500/70 rounded-2xl flex items-center justify-between gap-3 text-xs text-rose-200">
             <div className="flex items-center space-x-2">
               <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
               <span>
-                <strong>Active Simulation State:</strong> Ram Kund surge triggered to <strong>92% (CRITICAL)</strong>. Pilgrim Route A is congested; Route B is automatically prioritized.
+                <strong>Active Emergency Surge:</strong> Ram Kund density surged to <strong>92% (CRITICAL)</strong>. Dynamic divergence gate activated; automated reroute injected into pilgrim routing matrix.
               </span>
             </div>
             <button
               onClick={() => setActiveTab('navigation')}
-              className="bg-white text-rose-900 font-bold px-3 py-1 rounded-lg shrink-0 hover:bg-rose-100 flex items-center space-x-1"
+              className="bg-white text-rose-900 font-bold px-3 py-1 rounded-lg shrink-0 hover:bg-rose-100 flex items-center space-x-1 shadow"
             >
-              <span>View Route Shift</span>
+              <span>Inspect Routes</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

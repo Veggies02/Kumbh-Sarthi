@@ -11,7 +11,10 @@ import {
   Clock, 
   MapPin, 
   Trash2,
-  Volume2
+  Volume2,
+  VolumeX,
+  Square,
+  Radio
 } from 'lucide-react';
 
 export const AiAssistant: React.FC = () => {
@@ -26,7 +29,142 @@ export const AiAssistant: React.FC = () => {
 
   const [inputQuery, setInputQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speakingMsgId, setSpeakingMsgId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Play official police radio walkie-talkie chime before speech
+  const playRadioChime = (): Promise<void> => {
+    return new Promise((resolve) => {
+      try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioCtx) {
+          resolve();
+          return;
+        }
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        
+        // Chime tone 1: 880 Hz
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(880, now);
+        gain1.gain.setValueAtTime(0.18, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.16);
+
+        // Chime tone 2: 587 Hz
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(587.33, now + 0.18);
+        gain2.gain.setValueAtTime(0.18, now + 0.18);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.40);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.18);
+        osc2.stop(now + 0.40);
+
+        setTimeout(() => resolve(), 420);
+      } catch {
+        resolve();
+      }
+    });
+  };
+
+  const stripMarkdownForSpeech = (raw: string): string => {
+    return raw
+      .replace(/[*#_`~>]/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/\n+/g, '. ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+    setSpeakingMsgId(null);
+  };
+
+  const speakText = async (text: string, msgId?: string) => {
+    if (!('speechSynthesis' in window)) return;
+
+    // If currently speaking this specific message, toggle stop
+    if (isSpeaking && speakingMsgId === msgId) {
+      stopSpeaking();
+      return;
+    }
+
+    // Stop any existing speech
+    stopSpeaking();
+
+    const cleanText = stripMarkdownForSpeech(text);
+    if (!cleanText) return;
+
+    setIsSpeaking(true);
+    if (msgId) setSpeakingMsgId(msgId);
+
+    // 1. Play realistic radio chime
+    await playRadioChime();
+
+    // Check if still wanted (not stopped during chime)
+    if (!('speechSynthesis' in window)) {
+      setIsSpeaking(false);
+      setSpeakingMsgId(null);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const voices = window.speechSynthesis.getVoices();
+    const isDevanagari = /[\u0900-\u097F]/.test(cleanText);
+
+    if (language === 'mr' || (isDevanagari && (cleanText.includes('आहे') || cleanText.includes('करा')))) {
+      utterance.voice = voices.find(v => v.lang.startsWith('mr') || v.name.toLowerCase().includes('marathi'))
+        || voices.find(v => v.lang.startsWith('hi') || v.name.toLowerCase().includes('hindi'))
+        || voices.find(v => v.lang.includes('IN')) || null;
+      utterance.lang = utterance.voice?.lang || 'mr-IN';
+    } else if (language === 'hi' || isDevanagari) {
+      utterance.voice = voices.find(v => v.lang.startsWith('hi') || v.name.toLowerCase().includes('hindi'))
+        || voices.find(v => v.lang.includes('IN')) || null;
+      utterance.lang = utterance.voice?.lang || 'hi-IN';
+    } else {
+      utterance.voice = voices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
+        || voices.find(v => v.lang.startsWith('en')) || null;
+      utterance.lang = utterance.voice?.lang || 'en-IN';
+    }
+
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0;
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setSpeakingMsgId(null);
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setSpeakingMsgId(null);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Cleanup speech on unmount
+  useEffect(() => {
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const initialGreeting: ChatMessage = {
     id: 'msg-1',
@@ -63,6 +201,9 @@ export const AiAssistant: React.FC = () => {
     const query = textToSend || inputQuery;
     if (!query.trim() || loading) return;
 
+    // Stop speaking user enters a new prompt
+    stopSpeaking();
+
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'user',
@@ -82,8 +223,9 @@ export const AiAssistant: React.FC = () => {
         language
       });
 
+      const newAiId = `ai-${Date.now()}`;
       const aiMsg: ChatMessage = {
-        id: `ai-${Date.now()}`,
+        id: newAiId,
         sender: 'assistant',
         text: result.text,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -91,6 +233,11 @@ export const AiAssistant: React.FC = () => {
       };
 
       setMessages(prev => [...prev, aiMsg]);
+
+      // Speak aloud automatically if voiceEnabled is on!
+      if (voiceEnabled) {
+        speakText(result.text, newAiId);
+      }
     } catch (e) {
       console.error(e);
       const errorMsg: ChatMessage = {
@@ -106,6 +253,7 @@ export const AiAssistant: React.FC = () => {
   };
 
   const handleClearChat = () => {
+    stopSpeaking();
     setMessages([initialGreeting]);
   };
 
@@ -133,13 +281,55 @@ export const AiAssistant: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={handleClearChat}
-          className="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition-colors"
-          title="Clear chat"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => {
+              if (isSpeaking) {
+                stopSpeaking();
+              }
+              setVoiceEnabled(!voiceEnabled);
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center space-x-1.5 ${
+              voiceEnabled
+                ? isSpeaking
+                  ? 'bg-saffron-600 text-white border-saffron-600 shadow-sm animate-pulse'
+                  : 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
+            }`}
+            title={voiceEnabled ? 'Voice output enabled (Click to mute)' : 'Voice muted (Click to enable)'}
+          >
+            {voiceEnabled ? (
+              <>
+                <Volume2 className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce' : ''}`} />
+                <span>{isSpeaking ? 'Speaking...' : 'Voice: ON'}</span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="w-3.5 h-3.5" />
+                <span>Voice: MUTE</span>
+              </>
+            )}
+          </button>
+
+          {isSpeaking && (
+            <button
+              onClick={stopSpeaking}
+              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 flex items-center space-x-1"
+              title="Stop speaking"
+            >
+              <Square className="w-3 h-3 fill-rose-600" />
+              <span>Stop</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleClearChat}
+            className="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition-colors"
+            title="Clear chat"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Quick Prompts Bar */}
@@ -161,6 +351,7 @@ export const AiAssistant: React.FC = () => {
       <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
         {messages.map((msg) => {
           const isAi = msg.sender === 'assistant';
+          const isCurrentSpeaking = isSpeaking && speakingMsgId === msg.id;
 
           return (
             <div
@@ -180,15 +371,48 @@ export const AiAssistant: React.FC = () => {
               <div className={`max-w-[85%] sm:max-w-[75%] space-y-2`}>
                 <div className={`p-4 rounded-2xl text-sm leading-relaxed shadow-sm ${
                   isAi 
-                    ? 'bg-slate-50 border border-slate-200 text-slate-800 rounded-tl-none' 
+                    ? isCurrentSpeaking 
+                      ? 'bg-amber-50/90 border-2 border-saffron-500 text-slate-800 rounded-tl-none shadow-md'
+                      : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-tl-none' 
                     : 'bg-saffron-600 text-white rounded-tr-none'
                 }`}>
                   <div className="whitespace-pre-line">
                     {msg.text}
                   </div>
-                  <div className={`text-[10px] mt-2 text-right ${isAi ? 'text-slate-400' : 'text-saffron-200'}`}>
-                    {msg.timestamp}
-                  </div>
+
+                  {/* Footer with Audio Listen button for AI responses */}
+                  {isAi ? (
+                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-200/60">
+                      <button
+                        onClick={() => speakText(msg.text, msg.id)}
+                        className={`text-[11px] font-bold px-2 py-0.5 rounded-lg flex items-center space-x-1.5 transition-all ${
+                          isCurrentSpeaking
+                            ? 'bg-saffron-600 text-white shadow-xs animate-pulse'
+                            : 'text-saffron-700 hover:bg-saffron-100/70 border border-saffron-200/60 bg-white'
+                        }`}
+                        title={isCurrentSpeaking ? 'Stop audio' : 'Listen with police radio chime'}
+                      >
+                        {isCurrentSpeaking ? (
+                          <>
+                            <Square className="w-3 h-3 fill-white" />
+                            <span>Stop Audio</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="w-3 h-3 text-saffron-600" />
+                            <span>Listen (ऐका / सुनें)</span>
+                          </>
+                        )}
+                      </button>
+                      <div className="text-[10px] text-slate-400">
+                        {msg.timestamp}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-[10px] mt-2 text-right text-saffron-200">
+                      {msg.timestamp}
+                    </div>
+                  )}
                 </div>
 
                 {/* Referenced Places (Interactive Badges) */}

@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { useKumbh } from '../../store/kumbhStore';
-import { AlertCircle, PhoneCall, Sliders, Globe, Radio } from 'lucide-react';
+import { AlertCircle, PhoneCall, Globe, Radio } from 'lucide-react';
 import { OfflineMeshModal } from '../common/OfflineMeshModal';
+import { LoginModal } from '../auth/LoginModal';
 
 export const Header: React.FC = () => {
   const {
     crowdZones,
     language,
     setLanguage,
+    activeTab,
     setActiveTab,
     isSurgeActive,
+    currentUser,
+    currentFamily,
+    isAuthModalOpen,
+    setIsAuthModalOpen,
     t
   } = useKumbh();
 
@@ -112,22 +118,54 @@ export const Header: React.FC = () => {
               </span>
             </button>
 
-            {/* Admin / Demo Simulator Button */}
+            {/* Current User Session & Family Code Pill */}
             <button
-              onClick={() => setActiveTab('admin')}
-              className={`flex items-center space-x-1.5 text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-lg border transition-all ${
-                isSurgeActive
-                  ? 'bg-purple-600 text-white border-purple-700 shadow animate-pulse'
-                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-              }`}
-              title="Admin Crowd Control & Surge Simulator"
+              onClick={() => setIsAuthModalOpen(true)}
+              className="flex items-center space-x-2 text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 transition-all shadow-sm"
+              title="Click to Switch User / View Family Database"
             >
-              <Sliders className="w-3.5 h-3.5 text-purple-600" />
-              <span className="hidden sm:inline">Admin</span>
-              <span className="text-[10px] bg-purple-100 text-purple-800 font-bold px-1 rounded ml-0.5">
-                Sim
-              </span>
+              <div className="w-5 h-5 rounded-full bg-saffron-500 text-white flex items-center justify-center font-bold text-[11px]">
+                {currentUser.name.charAt(0)}
+              </div>
+              <div className="hidden sm:block text-left leading-tight">
+                <div className="font-bold text-[11px] truncate max-w-[95px]">{currentUser.name.split(' ')[0]}</div>
+                {currentFamily && currentUser.role === 'pilgrim' && (
+                  <div className="text-[9px] text-saffron-700 font-mono font-black">{currentFamily.familyCode}</div>
+                )}
+                {currentUser.role === 'police_admin' && (
+                  <div className="text-[9px] text-indigo-700 font-black">POLICE</div>
+                )}
+              </div>
             </button>
+
+            {/* Segregated Police ICCC Portal Entry / Exit */}
+            {activeTab === 'admin' ? (
+              <button
+                onClick={() => setActiveTab('home')}
+                className="flex items-center space-x-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-indigo-400 bg-indigo-900 text-white hover:bg-indigo-950 transition-all shadow"
+                title="Return to Pilgrim Mobile View"
+              >
+                <span>← Exit War Room</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  if (currentUser.role === 'police_admin') {
+                    setActiveTab('admin');
+                  } else {
+                    setIsAuthModalOpen(true);
+                  }
+                }}
+                className="flex items-center space-x-1.5 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 transition-all shadow-sm"
+                title="Police Command & Control Center Access"
+              >
+                <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
+                <span className="hidden sm:inline">Police ICCC</span>
+                <span className="text-[9px] bg-indigo-600 text-white font-extrabold px-1 rounded">
+                  PORTAL
+                </span>
+              </button>
+            )}
 
             {/* Emergency SOS Button */}
             <button
@@ -157,6 +195,9 @@ export const Header: React.FC = () => {
 
       {/* Offline Disaster Mesh Modal */}
       <OfflineMeshModal isOpen={showOfflineModal} onClose={() => setShowOfflineModal(false)} />
+
+      {/* Identity & Access / Family Group Database Modal */}
+      <LoginModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 };

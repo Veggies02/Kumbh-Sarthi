@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Place, CrowdZone, TravelPersona, RoutePreference, RouteOption, FamilyMember } from '../types';
-import { INITIAL_PLACES, INITIAL_CROWD_ZONES, MOCK_FAMILY_MEMBERS, ORIGIN_PRESETS } from '../data/kumbhData';
+import { INITIAL_PLACES, INITIAL_CROWD_ZONES, ORIGIN_PRESETS } from '../data/kumbhData';
 import { computeRoutes, enrichRoutesWithRealRoads } from '../services/routingEngine';
 import { TRANSLATIONS, Translations } from '../data/translations';
+import { kumbhDb, UserProfile, FamilyGroup } from '../services/kumbhDbService';
 
 interface OriginType {
   lat: number;
@@ -27,6 +28,28 @@ interface KumbhContextType {
   isSurgeActive: boolean;
   initialAssistantPrompt: string;
   isTrackingLive: boolean;
+
+  // Authentication & Database
+  currentUser: UserProfile;
+  currentFamily?: FamilyGroup;
+  userRole: 'pilgrim' | 'police_admin';
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  switchDemoUser: (presetKey: 'me' | 'dad' | 'mom' | 'brother' | 'grandpa' | 'police') => void;
+  loginPilgrimByPhone: (phone: string) => { success: boolean; message?: string };
+  registerPilgrim: (data: {
+    name: string;
+    phone: string;
+    familyCodeAction: 'create' | 'join';
+    familyCode?: string;
+    familyName?: string;
+    baseCamp?: string;
+    bloodGroup?: string;
+    medicalNotes?: string;
+    relation?: string;
+  }) => { success: boolean; message?: string };
+  loginPolice: (badge: string, pin: string) => { success: boolean; message?: string };
+  logout: () => void;
   
   // Helpers
   t: (key: keyof Translations) => string;
@@ -45,11 +68,35 @@ interface KumbhContextType {
   toggleCrowdSurge: () => void;
   resetCrowdSimulation: () => void;
   navigateToPlace: (place: Place) => void;
+  setOrigin: (origin: OriginType) => void;
   setOriginPreset: (presetId: string) => void;
   trackLiveLocation: () => Promise<void>;
 }
 
 const KumbhContext = createContext<KumbhContextType | undefined>(undefined);
+
+const userToFamilyMember = (u: UserProfile): FamilyMember => {
+  let badgeLetter = 'M';
+  if (u.name.toLowerCase().includes('sahil') || u.name.toLowerCase().includes('vedant') || u.relation?.toLowerCase().includes('me') || u.id === 'user-sahil-me' || u.id === 'user-vedant-me') badgeLetter = 'S';
+  else if (u.name.toLowerCase().includes('vinod') || u.relation?.toLowerCase().includes('father')) badgeLetter = 'Dad';
+  else if (u.name.toLowerCase().includes('anita') || u.relation?.toLowerCase().includes('mother')) badgeLetter = 'R';
+  else if (u.name.toLowerCase().includes('yash') || u.relation?.toLowerCase().includes('brother')) badgeLetter = 'Y';
+  else if (u.name.toLowerCase().includes('dattatraya') || u.relation?.toLowerCase().includes('grandpa')) badgeLetter = 'D';
+
+  return {
+    id: u.id,
+    name: u.name,
+    relation: u.relation || (u.familyRole === 'guardian' ? 'Family Guardian' : 'Family Member'),
+    lat: u.lat || 20.0050,
+    lng: u.lng || 73.7915,
+    batteryLevel: u.batteryLevel ?? 88,
+    lastSeenTime: 'Just now (Live GPS)',
+    status: u.status === 'alert' ? 'needs_help' : u.status === 'moving' ? 'moving' : 'safe',
+    locationNote: u.locationNote || 'Panchavati Sector',
+    avatarUrl: u.avatarUrl,
+    badgeText: badgeLetter
+  };
+};
 
 export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [places] = useState<Place[]>(INITIAL_PLACES);
@@ -59,19 +106,156 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [activeTab, setActiveTab] = useState<string>('home');
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [language, setLanguage] = useState<'en' | 'hi' | 'mr'>('en');
-  const [familyMembers] = useState<FamilyMember[]>(MOCK_FAMILY_MEMBERS);
   const [isSurgeActive, setIsSurgeActive] = useState<boolean>(false);
   const [initialAssistantPrompt, setInitialAssistantPrompt] = useState<string>('');
   const [isTrackingLive, setIsTrackingLive] = useState<boolean>(false);
 
-  // Default origin: MET Bhujbal Knowledge City (Adgaon, Nashik)
-  const defaultOriginPreset = ORIGIN_PRESETS[0];
-  const [origin, setOrigin] = useState<OriginType>({
-    lat: defaultOriginPreset.lat,
-    lng: defaultOriginPreset.lng,
-    name: defaultOriginPreset.name,
-    isLiveGps: false
+  // Authentication & Database State
+  const [currentUser, setCurrentUser] = useState<UserProfile>(() => kumbhDb.getCurrentUser());
+  const [currentFamily, setCurrentFamily] = useState<FamilyGroup | undefined>(() => {
+    const user = kumbhDb.getCurrentUser();
+    return user.familyId ? kumbhDb.getFamilyById(user.familyId) : undefined;
   });
+  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>(() => {
+    const user = kumbhDb.getCurrentUser();
+    if (user.familyId) {
+      const dbMembers = kumbhDb.getFamilyMembers(user.familyId);
+      if (dbMembers.length > 0) return dbMembers.map(userToFamilyMember);
+    }
+    return kumbhDb.getAllUsers().filter(u => u.role === 'pilgrim').slice(0, 5).map(userToFamilyMember);
+  });
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+
+  const refreshFamilyState = useCallback((user: UserProfile) => {
+    if (user.familyId) {
+      const fam = kumbhDb.getFamilyById(user.familyId);
+      setCurrentFamily(fam);
+      const members = kumbhDb.getFamilyMembers(user.familyId);
+      setFamilyMembers(members.map(userToFamilyMember));
+    } else {
+      setCurrentFamily(undefined);
+      setFamilyMembers([]);
+    }
+  }, []);
+
+  const switchDemoUser = (presetKey: 'me' | 'dad' | 'mom' | 'brother' | 'grandpa' | 'police') => {
+    const user = kumbhDb.switchDemoUser(presetKey);
+    setCurrentUser(user);
+    if (user.role === 'police_admin') {
+      setActiveTab('admin');
+    } else {
+      refreshFamilyState(user);
+      if (activeTab === 'admin') {
+        setActiveTab('home');
+      }
+    }
+
+    // DYNAMIC ROUTE ORIGIN SYNC:
+    // If the switched user has a location, immediately switch origin so all destinations are routed from their location!
+    if (user.lat && user.lng) {
+      setOrigin({
+        lat: user.lat,
+        lng: user.lng,
+        name: `${user.name} (${user.locationNote || 'Live Location'})`,
+        isLiveGps: true
+      });
+    }
+  };
+
+  const loginPilgrimByPhone = (phone: string) => {
+    const allUsers = kumbhDb.getAllUsers();
+    const cleanPhone = phone.replace(/\s+/g, '').replace('+91', '');
+    const found = allUsers.find(u => u.phone.replace(/\s+/g, '').includes(cleanPhone));
+    if (found) {
+      kumbhDb.setCurrentUser(found);
+      setCurrentUser(found);
+      refreshFamilyState(found);
+      if (found.lat && found.lng) {
+        setOrigin({
+          lat: found.lat,
+          lng: found.lng,
+          name: `${found.name} (${found.locationNote || 'Live Location'})`,
+          isLiveGps: true
+        });
+      }
+      return { success: true, message: `Welcome back, ${found.name}!` };
+    }
+    return { success: false, message: 'No registered pilgrim found with this phone number. Please register.' };
+  };
+
+  const registerPilgrim = (data: Parameters<typeof kumbhDb.registerPilgrim>[0]) => {
+    const res = kumbhDb.registerPilgrim(data);
+    if (res.success && res.user) {
+      setCurrentUser(res.user);
+      refreshFamilyState(res.user);
+      if (res.user.lat && res.user.lng) {
+        setOrigin({
+          lat: res.user.lat,
+          lng: res.user.lng,
+          name: `${res.user.name} (${res.user.locationNote || 'Live Location'})`,
+          isLiveGps: true
+        });
+      }
+    }
+    return res;
+  };
+
+  const loginPolice = (badge: string, pin: string) => {
+    const res = kumbhDb.loginPolice(badge, pin);
+    if (res.success && res.user) {
+      setCurrentUser(res.user);
+      setActiveTab('admin');
+    }
+    return res;
+  };
+
+  const logout = () => {
+    // Default back to Dad for demo convenience
+    const defaultUser = kumbhDb.switchDemoUser('dad');
+    setCurrentUser(defaultUser);
+    refreshFamilyState(defaultUser);
+    if (defaultUser.lat && defaultUser.lng) {
+      setOrigin({
+        lat: defaultUser.lat,
+        lng: defaultUser.lng,
+        name: `${defaultUser.name} (${defaultUser.locationNote || 'Live Location'})`,
+        isLiveGps: true
+      });
+    }
+    setActiveTab('home');
+  };
+
+  // Default origin: Current logged-in user's GPS position, fallback to MET Bhujbal Knowledge City
+  const [origin, setOrigin] = useState<OriginType>(() => {
+    const user = kumbhDb.getCurrentUser();
+    if (user && user.lat && user.lng) {
+      return {
+        lat: user.lat,
+        lng: user.lng,
+        name: `${user.name} (${user.locationNote || 'Live Location'})`,
+        isLiveGps: true
+      };
+    }
+    const defaultOriginPreset = ORIGIN_PRESETS[0];
+    return {
+      lat: defaultOriginPreset.lat,
+      lng: defaultOriginPreset.lng,
+      name: defaultOriginPreset.name,
+      isLiveGps: false
+    };
+  });
+
+  // Sync origin whenever currentUser changes
+  useEffect(() => {
+    if (currentUser && currentUser.lat && currentUser.lng) {
+      setOrigin({
+        lat: currentUser.lat,
+        lng: currentUser.lng,
+        name: `${currentUser.name} (${currentUser.locationNote || 'Live Location'})`,
+        isLiveGps: true
+      });
+    }
+  }, [currentUser]);
 
   // Default destination: Ram Kund (id: 'ram-kund')
   const defaultDest = INITIAL_PLACES.find(p => p.id === 'ram-kund') || INITIAL_PLACES[0];
@@ -236,6 +420,15 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const navigateToPlace = (place: Place) => {
+    // If the active logged-in persona has a location, route from their place
+    if (currentUser && currentUser.lat && currentUser.lng) {
+      setOrigin({
+        lat: currentUser.lat,
+        lng: currentUser.lng,
+        name: `${currentUser.name} (${currentUser.locationNote || 'Live Location'})`,
+        isLiveGps: true
+      });
+    }
     setDestination(place);
     setSelectedPlace(place);
     setActiveTab('navigation');
@@ -259,6 +452,16 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isSurgeActive,
         initialAssistantPrompt,
         isTrackingLive,
+        currentUser,
+        currentFamily,
+        userRole: currentUser.role,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        switchDemoUser,
+        loginPilgrimByPhone,
+        registerPilgrim,
+        loginPolice,
+        logout,
         t,
         setPersona,
         setPreference,
@@ -273,6 +476,7 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         toggleCrowdSurge,
         resetCrowdSimulation,
         navigateToPlace,
+        setOrigin,
         setOriginPreset,
         trackLiveLocation
       }}

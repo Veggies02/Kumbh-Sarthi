@@ -25,8 +25,7 @@ export const Sidebar: React.FC = () => {
     { id: 'itinerary', label: t('navItinerary'), icon: Calendar },
     { id: 'crowd', label: t('navCrowd'), icon: Activity, alert: isSurgeActive },
     { id: 'family', label: t('navFamily'), icon: Users },
-    { id: 'emergency', label: t('navEmergency'), icon: AlertTriangle, danger: true },
-    { id: 'admin', label: t('navAdmin'), icon: SlidersHorizontal, admin: true }
+    { id: 'emergency', label: t('navEmergency'), icon: AlertTriangle, danger: true }
   ];
 
   return (
@@ -50,11 +49,6 @@ export const Sidebar: React.FC = () => {
               ? 'bg-rose-50 text-rose-700 font-bold border-r-4 border-rose-600'
               : 'text-rose-600 hover:bg-rose-50 font-medium';
           }
-          if (item.admin) {
-            btnClass = isActive
-              ? 'bg-purple-50 text-purple-700 font-bold border-r-4 border-purple-600'
-              : 'text-purple-600 hover:bg-purple-50 font-medium';
-          }
 
           return (
             <button
@@ -65,7 +59,7 @@ export const Sidebar: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <Icon className={`w-4 h-4 ${
                   isActive 
-                    ? item.admin ? 'text-purple-600' : item.danger ? 'text-rose-600' : 'text-saffron-600'
+                    ? item.danger ? 'text-rose-600' : 'text-saffron-600'
                     : 'text-slate-400'
                 }`} />
                 <span>{item.label}</span>

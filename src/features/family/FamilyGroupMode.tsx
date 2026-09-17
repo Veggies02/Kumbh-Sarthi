@@ -14,24 +14,42 @@ import {
   Check, 
   AlertCircle,
   QrCode,
-  Sparkles
+  Sparkles,
+  Compass
 } from 'lucide-react';
 
 export const FamilyGroupMode: React.FC = () => {
-  const { familyMembers, navigateToPlace } = useKumbh();
-  const [groupName, setGroupName] = useState('Mhaske Family (Nashik)');
-  const [invited, setInvited] = useState(false);
+  const { 
+    familyMembers, 
+    navigateToPlace, 
+    setOrigin, 
+    setActiveTab, 
+    currentFamily, 
+    currentUser, 
+    setIsAuthModalOpen 
+  } = useKumbh();
+  const [copiedCode, setCopiedCode] = useState(false);
   const [isBadgeModalOpen, setIsBadgeModalOpen] = useState(false);
   const [selectedBadgeProfile, setSelectedBadgeProfile] = useState<any>(null);
+
+  const familyCode = currentFamily?.familyCode || 'MHASKE-2027';
+  const groupName = currentFamily?.familyName || 'Mhaske Family (Nashik)';
+  const baseCamp = currentFamily?.baseCampLocation || 'Gangapur Road, Anandvalli Base Camp';
+
+  const handleCopyFamilyCode = () => {
+    navigator.clipboard.writeText(familyCode);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2500);
+  };
 
   const openBadgeModal = (member?: FamilyMember) => {
     if (member) {
       setSelectedBadgeProfile({
         name: member.name,
-        emergencyContactName: 'Family Guardian',
-        emergencyContactPhone: '+919823012345',
+        emergencyContactName: currentUser.name,
+        emergencyContactPhone: currentUser.emergencyPhone || '+91 98220 11223',
         baseCampLocation: member.locationNote,
-        kumbhId: `KMB-2027-${member.relation.substring(0, 3).toUpperCase()}-4821`
+        kumbhId: `KMB-2027-${familyCode}-${member.relation.substring(0, 3).toUpperCase()}`
       });
     } else {
       setSelectedBadgeProfile(null);
@@ -72,7 +90,7 @@ export const FamilyGroupMode: React.FC = () => {
         <div>
           <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-semibold mb-2">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Prototype Demo • Simulated Location Sharing</span>
+            <span>Partitioned Family Circle • Database Isolated</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 flex items-center space-x-2">
             <Users className="w-6 h-6 text-saffron-600" />
@@ -83,16 +101,23 @@ export const FamilyGroupMode: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => {
-            setInvited(true);
-            setTimeout(() => setInvited(false), 3000);
-          }}
-          className="self-start sm:self-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-sm transition-all active:scale-95"
-        >
-          {invited ? <Check className="w-4 h-4 text-emerald-400" /> : <UserPlus className="w-4 h-4" />}
-          <span>{invited ? 'Invite Link Copied!' : '+ Add Family Member'}</span>
-        </button>
+        <div className="flex items-center space-x-2 self-start sm:self-auto">
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
+            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center space-x-1.5 transition-all"
+          >
+            <Users className="w-3.5 h-3.5 text-slate-600" />
+            <span>Switch / Join Family</span>
+          </button>
+          
+          <button
+            onClick={handleCopyFamilyCode}
+            className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-sm transition-all active:scale-95"
+          >
+            {copiedCode ? <Check className="w-4 h-4 text-emerald-400" /> : <UserPlus className="w-4 h-4" />}
+            <span>{copiedCode ? 'Code Copied!' : 'Share Family Code'}</span>
+          </button>
+        </div>
       </div>
 
       {/* USP Hero Banner: Digital Kumbh Raksha Bandhan */}
@@ -127,22 +152,38 @@ export const FamilyGroupMode: React.FC = () => {
         </button>
       </div>
 
-      {/* Active Group Card */}
+      {/* Active Group Card with Persistent Code */}
       <div className="bg-gradient-to-r from-saffron-500 to-amber-500 text-white rounded-3xl p-6 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs uppercase font-extrabold tracking-wider text-saffron-100">
-            Active Temporary Group
-          </span>
+          <div className="flex items-center space-x-2">
+            <span className="text-xs uppercase font-extrabold tracking-wider text-saffron-100">
+              Active Family Group
+            </span>
+            <span className="bg-white/20 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+              Base: {baseCamp}
+            </span>
+          </div>
           <h2 className="text-xl sm:text-2xl font-black mt-0.5">
             {groupName}
           </h2>
           <p className="text-xs text-saffron-100 mt-1">
-            4 Connected Members • All active within Panchavati sector
+            {familyMembers.length} Connected Members • Synchronized with local IndexedDB cache
           </p>
         </div>
 
-        <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-2xl text-xs font-semibold self-start sm:self-auto">
-          Auto-ping: Every 30s
+        {/* Sharable Family Code Pill */}
+        <div className="bg-black/25 backdrop-blur border border-white/25 px-4 py-2.5 rounded-2xl flex items-center space-x-3 self-start sm:self-auto">
+          <div>
+            <div className="text-[10px] uppercase font-bold text-amber-200">Shareable Family Code</div>
+            <div className="font-mono text-base font-black tracking-widest text-white">{familyCode}</div>
+          </div>
+          <button
+            onClick={handleCopyFamilyCode}
+            className="p-2 bg-white/20 hover:bg-white/30 rounded-xl text-white transition-colors"
+            title="Copy Family Code"
+          >
+            {copiedCode ? <Check className="w-4 h-4 text-emerald-300" /> : <Sparkles className="w-4 h-4 text-amber-300" />}
+          </button>
         </div>
       </div>
 
@@ -207,18 +248,38 @@ export const FamilyGroupMode: React.FC = () => {
             <div className="flex items-center space-x-2 pt-1">
               <button
                 onClick={() => handleNavigateToMember(member)}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 shadow-sm transition-all"
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-2.5 rounded-xl text-xs flex items-center justify-center space-x-1 shadow-sm transition-all"
+                title="Navigate to this family member"
               >
-                <Navigation className="w-3.5 h-3.5 text-saffron-400" />
+                <Navigation className="w-3.5 h-3.5 text-saffron-400 shrink-0" />
                 <span>Navigate</span>
               </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setOrigin({
+                    lat: member.lat,
+                    lng: member.lng,
+                    name: `${member.name} (${member.locationNote})`,
+                    isLiveGps: true
+                  });
+                  setActiveTab('navigation');
+                }}
+                className="bg-saffron-50 hover:bg-saffron-100 text-saffron-900 border border-saffron-300 font-bold py-2.5 px-2.5 rounded-xl text-xs flex items-center justify-center space-x-1 transition-colors shrink-0"
+                title="Calculate all pilgrimage routes starting from this family member's location"
+              >
+                <Compass className="w-3.5 h-3.5 text-saffron-700 shrink-0" />
+                <span>Route From</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => openBadgeModal(member)}
-                className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1 transition-colors"
+                className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold py-2.5 px-2.5 rounded-xl text-xs flex items-center justify-center space-x-1 transition-colors shrink-0"
                 title="View Wearable Safety QR Badge"
               >
-                <QrCode className="w-3.5 h-3.5 text-amber-700" />
+                <QrCode className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                 <span>QR Badge</span>
               </button>
             </div>
