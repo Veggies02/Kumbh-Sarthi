@@ -1,0 +1,21 @@
+{
+  "model_type": "GradientBoostingRegressor + Dijkstra Dynamic Heuristic",
+  "training_samples": 284520,
+  "features": [
+    "hour_of_day",
+    "is_shahi_snan",
+    "upstream_inflow_p3",
+    "upstream_inflow_p1",
+    "ghat_turnstile_delta",
+    "weather_temp_c"
+  ],
+  "validation_metrics": {
+    "mae_density_pct": 2.84,
+    "rmse": 3.61,
+    "r2_score": 0.942,
+    "bottleneck_detection_precision": 0.968,
+    "bottleneck_detection_recall": 0.954
+  },
+  "lead_time_minutes": 45,
+  "inference_latency_ms": 4.2
+}

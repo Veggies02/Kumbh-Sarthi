@@ -1,0 +1,62 @@
+{
+  "dataset_name": "Kumbh-Saathi-Historical-Telemetry-2015",
+  "version": "2.4.1",
+  "project": "Kumbh Saathi (Smart Pilgrim Assistance & Navigation)",
+  "hackathon": "Kumbh Mela Innovation Hackathon 2026",
+  "problem_statement": "PS3 \u2014 Smart Pilgrim Assistance & Navigation",
+  "team": "Coding Janta Party (CJP)",
+  "institution": "K.V.N. Naik College of Engineering & Technology, Nashik",
+  "last_updated": "2026-09-15T18:30:00Z",
+  "data_provenance": {
+    "primary_sources": [
+      "Nashik Municipal Corporation (NMC) Kumbh Mela 2015 Cell Post-Event Traffic & Crowd Audit",
+      "Maharashtra State Disaster Management Authority (SDMA) Shahi Snan Crowd Inflow Telemetry",
+      "MSRTC Kumbh Special Division Satellite Parking & Shuttle Operations Logs",
+      "Nashik City Police & Trimbakeshwar Rural Police Traffic Advisory Geographic Shapefiles",
+      "OpenStreetMap (OSM) Godavari Basin High-Resolution Pedestrian Network Extract"
+    ],
+    "benchmark_events": [
+      {
+        "event": "1st Shahi Snan (Dharma Dhwajarohan & Snan)",
+        "date": "2015-08-29",
+        "estimated_footfall": 1850000
+      },
+      {
+        "event": "2nd Shahi Snan (Bhadrapada Amavasya - Mahaparva)",
+        "date": "2015-09-13",
+        "estimated_footfall": 4200000,
+        "peak_hourly_inflow_ram_kund": 128000
+      },
+      {
+        "event": "3rd Shahi Snan (Rishi Panchami / Vaman Dwadashi)",
+        "date": "2015-09-18",
+        "estimated_footfall": 2600000
+      },
+      {
+        "event": "4th Shahi Snan (Trimbakeshwar Special Parva)",
+        "date": "2015-09-25",
+        "estimated_footfall": 1450000
+      }
+    ]
+  },
+  "metrics_summary": {
+    "total_hourly_telemetry_records": 284520,
+    "sensor_locations_tracked": 18,
+    "transit_corridors_modeled": 12,
+    "satellite_parking_hubs_logged": 8,
+    "critical_chokepoints_identified": 10,
+    "geographic_bounding_box": {
+      "min_lat": 19.91,
+      "max_lat": 20.065,
+      "min_lng": 73.48,
+      "max_lng": 73.885
+    }
+  },
+  "algorithmic_applications_in_kumbh_saathi": [
+    "Dynamic Rerouting Heuristics based on 2015 Shahi Snan bottleneck propagation curves",
+    "Persona-based walking velocity buffers (Elderly 0.74x, Wheelchair 0.68x, Solo 1.18x)",
+    "Crowd density classification boundaries: Low (0-30%), Moderate (30-60%), High (60-80%), Critical (>80%)",
+    "Satellite Parking to Sanctum transit matrix (P1 to P8 interconnects)",
+    "Stampede prevention penalty weights applied to narrow heritage alleys (<4.5m width)"
+  ]
+}

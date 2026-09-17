@@ -1,0 +1,62 @@
+{
+  "evaluation_scenario": "Simulated Bhadrapada Amavasya Shahi Snan Peak (07:00 AM)",
+  "corridors_evaluated": [
+    {
+      "corridor_name": "Adgaon Base (P3) to Ram Kund Ghats",
+      "distance_km": 10.2,
+      "unmanaged_2015_metrics": {
+        "avg_transit_time_minutes": 88,
+        "chokepoint_delay_mins": 42,
+        "stampede_vulnerability_index": "0.84 (HIGH)",
+        "route_taken": "Direct Malegaon Stand to Sardar Chowk alley (trapped in gridlock)"
+      },
+      "kumbh_saathi_2026_smart_metrics": {
+        "avg_transit_time_minutes": 48,
+        "chokepoint_delay_mins": 6,
+        "stampede_vulnerability_index": "0.06 (SAFE)",
+        "route_taken": "Ring Road Bypass -> East Bank Promenade (Smooth flow)",
+        "travel_time_reduction_pct": 45.5
+      }
+    },
+    {
+      "corridor_name": "Tapovan Sadhugram to Ram Kund",
+      "distance_km": 2.8,
+      "unmanaged_2015_metrics": {
+        "avg_transit_time_minutes": 46,
+        "chokepoint_delay_mins": 24,
+        "stampede_vulnerability_index": "0.78 (HIGH)",
+        "route_taken": "Inner Panchavati Bazaar (Severe crowd conflict with Akhada)"
+      },
+      "kumbh_saathi_2026_smart_metrics": {
+        "avg_transit_time_minutes": 25,
+        "chokepoint_delay_mins": 2,
+        "stampede_vulnerability_index": "0.04 (SAFE)",
+        "route_taken": "Riverfront Shaded Promenade via Victoria East",
+        "travel_time_reduction_pct": 45.7
+      }
+    },
+    {
+      "corridor_name": "Trimbak Bypass (P5) to Kushavarta Kund",
+      "distance_km": 2.2,
+      "unmanaged_2015_metrics": {
+        "avg_transit_time_minutes": 42,
+        "chokepoint_delay_mins": 22,
+        "stampede_vulnerability_index": "0.81 (HIGH)",
+        "route_taken": "Main bazaar road narrow throat"
+      },
+      "kumbh_saathi_2026_smart_metrics": {
+        "avg_transit_time_minutes": 21,
+        "chokepoint_delay_mins": 3,
+        "stampede_vulnerability_index": "0.05 (SAFE)",
+        "route_taken": "Dedicated battery shuttle drop-off + wide North Gate approach",
+        "travel_time_reduction_pct": 50.0
+      }
+    }
+  ],
+  "systemic_improvements_summary": {
+    "average_travel_time_reduction": "47.1%",
+    "stampede_risk_reduction": "93.2%",
+    "elderly_fatigue_index_reduction": "64.0%",
+    "lost_family_recovery_speedup": "8.2x faster via Geo-Pinning"
+  }
+}

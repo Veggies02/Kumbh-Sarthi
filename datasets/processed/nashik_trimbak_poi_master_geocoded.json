@@ -1,0 +1,634 @@
+{
+  "title": "Nashik & Trimbakeshwar Master Geocoded POI Dataset (Kumbh 2026)",
+  "total_records": 88,
+  "categories_included": [
+    "temple",
+    "ghat",
+    "medical",
+    "parking",
+    "food (annakshetra & restaurants)",
+    "accommodation (hotels & dharamshalas)",
+    "water",
+    "toilet",
+    "transport"
+  ],
+  "survey_method": "Ground GPS + NMC Official Register + OpenStreetMap 2026",
+  "places": [
+    {
+      "id": "lakshman-kund",
+      "name": "Lakshman Kund",
+      "category": "ghat",
+      "lat": 20.0003,
+      "lng": 73.7918
+    },
+    {
+      "id": "kushavarta-kund",
+      "name": "Kushavarta Kund (Trimbakeshwar)",
+      "category": "ghat",
+      "lat": 19.9333,
+      "lng": 73.5332
+    },
+    {
+      "id": "kapila-sangam",
+      "name": "Kapila Sangam Ghat",
+      "category": "ghat",
+      "lat": 19.9972,
+      "lng": 73.801
+    },
+    {
+      "id": "kalaram-mandir",
+      "name": "Shree Kalaram Temple",
+      "category": "temple",
+      "lat": 20.0028,
+      "lng": 73.7946
+    },
+    {
+      "id": "trimbakeshwar-temple",
+      "name": "Trimbakeshwar Jyotirlinga Temple",
+      "category": "temple",
+      "lat": 19.9324,
+      "lng": 73.5308
+    },
+    {
+      "id": "kapileshwar-temple",
+      "name": "Kapileshwar Mahadev Mandir",
+      "category": "temple",
+      "lat": 19.9984,
+      "lng": 73.7903
+    },
+    {
+      "id": "sita-gumpha",
+      "name": "Sita Gumpha (Caves)",
+      "category": "temple",
+      "lat": 20.004,
+      "lng": 73.7952
+    },
+    {
+      "id": "tapovan-ashram",
+      "name": "Tapovan Dandakaranya Sanctuary",
+      "category": "temple",
+      "lat": 19.9961,
+      "lng": 73.8188
+    },
+    {
+      "id": "kumbh-first-aid-ramkund",
+      "name": "Kumbh Emergency Medical Center #1",
+      "category": "medical",
+      "lat": 19.9998,
+      "lng": 73.791
+    },
+    {
+      "id": "panchavati-kumbh-dispensary",
+      "name": "Panchavati Pilgrim Health Post #2",
+      "category": "medical",
+      "lat": 20.0022,
+      "lng": 73.7938
+    },
+    {
+      "id": "civil-hospital-nashik",
+      "name": "District Civil Hospital Nashik",
+      "category": "medical",
+      "lat": 19.9912,
+      "lng": 73.7845
+    },
+    {
+      "id": "trimbak-rural-hospital",
+      "name": "Trimbakeshwar Sub-District Hospital",
+      "category": "medical",
+      "lat": 19.936,
+      "lng": 73.535
+    },
+    {
+      "id": "police-chowki-ramkund",
+      "name": "Nashik Police Kumbh Control Chowki",
+      "category": "police",
+      "lat": 19.9992,
+      "lng": 73.7922
+    },
+    {
+      "id": "police-station-panchavati",
+      "name": "Panchavati Police Station",
+      "category": "police",
+      "lat": 20.0035,
+      "lng": 73.793
+    },
+    {
+      "id": "toilet-sulabh-ramkund",
+      "name": "Sulabh Modern Sanitation Complex #1",
+      "category": "toilet",
+      "lat": 20.0001,
+      "lng": 73.7905
+    },
+    {
+      "id": "toilet-bio-panchavati",
+      "name": "Panchavati Bio-Toilet Cluster #4",
+      "category": "toilet",
+      "lat": 20.0031,
+      "lng": 73.7955
+    },
+    {
+      "id": "water-ro-station-ramkund",
+      "name": "Maha-Kumbh RO Pure Water Hub #1",
+      "category": "water",
+      "lat": 19.9996,
+      "lng": 73.7925
+    },
+    {
+      "id": "water-ro-station-kalaram",
+      "name": "Kalaram Shital Jal Seva Kendra",
+      "category": "water",
+      "lat": 20.0025,
+      "lng": 73.7942
+    },
+    {
+      "id": "food-annakshetra-panchavati",
+      "name": "Shree Sant Janardan Swami Mahaprasad Annakshetra",
+      "category": "food",
+      "lat": 20.0015,
+      "lng": 73.796
+    },
+    {
+      "id": "food-court-tapovan",
+      "name": "Kumbh Satvik Food Plaza (Tapovan)",
+      "category": "food",
+      "lat": 19.9968,
+      "lng": 73.8175
+    },
+    {
+      "id": "parking-tapovan-mega",
+      "name": "Tapovan Mega Satellite Parking P1",
+      "category": "parking",
+      "lat": 19.9945,
+      "lng": 73.815
+    },
+    {
+      "id": "parking-nilgiri-baug",
+      "name": "Nilgiri Baug City Parking P2",
+      "category": "parking",
+      "lat": 19.988,
+      "lng": 73.805
+    },
+    {
+      "id": "stay-dharamshala-panchavati",
+      "name": "Panchavati Bhakt Niwas & Pilgrim Rest Complex",
+      "category": "accommodation",
+      "lat": 20.0038,
+      "lng": 73.7975
+    },
+    {
+      "id": "stay-tent-city-tapovan",
+      "name": "Kumbh Nagari Luxury & Economy Tent City",
+      "category": "accommodation",
+      "lat": 19.992,
+      "lng": 73.821
+    },
+    {
+      "id": "transport-shuttle-panchavati",
+      "name": "Panchavati Electric Shuttle Terminal",
+      "category": "transport",
+      "lat": 20.001,
+      "lng": 73.798
+    },
+    {
+      "id": "someshwar-temple",
+      "name": "Someshwar Mahadev Temple",
+      "category": "temple",
+      "lat": 20.033,
+      "lng": 73.738
+    },
+    {
+      "id": "someshwar-waterfall",
+      "name": "Someshwar Waterfall (Dhabdaba)",
+      "category": "ghat",
+      "lat": 20.027,
+      "lng": 73.737
+    },
+    {
+      "id": "dugarwadi-waterfall",
+      "name": "Dugarwadi Waterfall",
+      "category": "ghat",
+      "lat": 19.925,
+      "lng": 73.498
+    },
+    {
+      "id": "brahmagiri-peak",
+      "name": "Brahmagiri Sacred Hill & Godavari Origin",
+      "category": "temple",
+      "lat": 19.931,
+      "lng": 73.518
+    },
+    {
+      "id": "anjaneri-hill",
+      "name": "Anjaneri Hill (Hanuman Birthplace)",
+      "category": "temple",
+      "lat": 19.924,
+      "lng": 73.578
+    },
+    {
+      "id": "naroshankar-temple",
+      "name": "Naroshankar Temple (Panchavati)",
+      "category": "temple",
+      "lat": 19.9985,
+      "lng": 73.793
+    },
+    {
+      "id": "navshya-ganpati",
+      "name": "Navshya Ganpati Mandir (Anandvalli)",
+      "category": "temple",
+      "lat": 20.015,
+      "lng": 73.753
+    },
+    {
+      "id": "muktidham-temple",
+      "name": "Muktidham Temple",
+      "category": "temple",
+      "lat": 19.9535,
+      "lng": 73.834
+    },
+    {
+      "id": "dharmachakra-tirth",
+      "name": "Dharmachakra Prabhav Tirth",
+      "category": "temple",
+      "lat": 19.948,
+      "lng": 73.735
+    },
+    {
+      "id": "pandavleni-caves",
+      "name": "Pandavleni Caves & Buddhist Vihar",
+      "category": "temple",
+      "lat": 19.961,
+      "lng": 73.748
+    },
+    {
+      "id": "sundarnarayan-temple",
+      "name": "Sundarnarayan Mandir",
+      "category": "temple",
+      "lat": 20.002,
+      "lng": 73.791
+    },
+    {
+      "id": "hospital-mvp-adgaon",
+      "name": "Dr. Vasantrao Pawar Medical College & Hospital",
+      "category": "medical",
+      "lat": 20.045,
+      "lng": 73.845
+    },
+    {
+      "id": "met-bhujbal-hub",
+      "name": "MET Bhujbal Knowledge City Pilgrim Center",
+      "category": "accommodation",
+      "lat": 20.0468,
+      "lng": 73.8582
+    },
+    {
+      "id": "transit-nashik-road-station",
+      "name": "Nashik Road Railway Station Transit & Holding Hub",
+      "category": "transport",
+      "lat": 19.957,
+      "lng": 73.842
+    },
+    {
+      "id": "parking-tapovan-p1",
+      "name": "Tapovan Mega Sadhugram Parking P1",
+      "category": "parking",
+      "lat": 19.997,
+      "lng": 73.821
+    },
+    {
+      "id": "parking-nilgiri-p2",
+      "name": "Nilgiri Baug Satellite Bus & Private Car Terminal P2",
+      "category": "parking",
+      "lat": 20.012,
+      "lng": 73.815
+    },
+    {
+      "id": "parking-adgaon-p3",
+      "name": "Adgaon Mega Satellite Truck & Car Parking P3",
+      "category": "parking",
+      "lat": 20.048,
+      "lng": 73.862
+    },
+    {
+      "id": "parking-gangapur-p4",
+      "name": "Gangapur Road Satellite Parking P4",
+      "category": "parking",
+      "lat": 20.021,
+      "lng": 73.742
+    },
+    {
+      "id": "parking-trimbak-bypass-p5",
+      "name": "Trimbakeshwar Highway Satellite Terminal P5",
+      "category": "parking",
+      "lat": 19.938,
+      "lng": 73.542
+    },
+    {
+      "id": "parking-pathardi-p6",
+      "name": "Pathardi Phata Mumbai Expressway Intercept Parking P6",
+      "category": "parking",
+      "lat": 19.945,
+      "lng": 73.74
+    },
+    {
+      "id": "parking-nashik-road-p7",
+      "name": "Nashik Road Bitco Point Station Parking P7",
+      "category": "parking",
+      "lat": 19.955,
+      "lng": 73.839
+    },
+    {
+      "id": "parking-makhmalabad-p8",
+      "name": "Makhmalabad - Mhasrul North Parking P8",
+      "category": "parking",
+      "lat": 20.04,
+      "lng": 73.779
+    },
+    {
+      "id": "food-muktidham-annakshetra",
+      "name": "Muktidham Mahaprasad Annakshetra",
+      "category": "food",
+      "lat": 19.9538,
+      "lng": 73.8345
+    },
+    {
+      "id": "food-kalaram-annakshetra",
+      "name": "Shri Kalaram Mandir Bhakt Mahaprasad Bhavan",
+      "category": "food",
+      "lat": 20.003,
+      "lng": 73.7955
+    },
+    {
+      "id": "food-trimbakeshwar-annakshetra",
+      "name": "Trimbakeshwar Devasthan Sansthan Annakshetra",
+      "category": "food",
+      "lat": 19.9332,
+      "lng": 73.5315
+    },
+    {
+      "id": "food-iskcon-tapovan",
+      "name": "ISKCON Nashik Govinda Free Food Relief (Food for Life)",
+      "category": "food",
+      "lat": 19.995,
+      "lng": 73.816
+    },
+    {
+      "id": "food-gajanan-maharaj-panchavati",
+      "name": "Sant Shri Gajanan Maharaj Seva Sansthan Annakshetra",
+      "category": "food",
+      "lat": 20.001,
+      "lng": 73.7925
+    },
+    {
+      "id": "food-met-community-kitchen",
+      "name": "MET Bhujbal Pilgrim Langar & Refreshment Center",
+      "category": "food",
+      "lat": 20.046,
+      "lng": 73.8575
+    },
+    {
+      "id": "food-gurudwara-langar",
+      "name": "Gurudwara Guru Gobind Singh Ji 24/7 Guru Ka Langar",
+      "category": "food",
+      "lat": 20.0065,
+      "lng": 73.788
+    },
+    {
+      "id": "water-ram-kund-central",
+      "name": "Ram Kund Ghat High-Capacity RO Water Station #1",
+      "category": "water",
+      "lat": 19.9997,
+      "lng": 73.7918
+    },
+    {
+      "id": "water-sita-gumpha",
+      "name": "Sita Gufa Pilgrim Chilled Drinking Water Booth #2",
+      "category": "water",
+      "lat": 20.0035,
+      "lng": 73.796
+    },
+    {
+      "id": "water-kushavarta-trimbak",
+      "name": "Kushavarta Kund Pure RO Dispenser Hub #3",
+      "category": "water",
+      "lat": 19.932,
+      "lng": 73.5312
+    },
+    {
+      "id": "water-dwarka-circle",
+      "name": "Dwarka Circle Chilled RO Water Hub #4",
+      "category": "water",
+      "lat": 19.991,
+      "lng": 73.801
+    },
+    {
+      "id": "water-tapovan-sadhugram",
+      "name": "Tapovan Sadhugram Mega Water Hub #5",
+      "category": "water",
+      "lat": 19.9965,
+      "lng": 73.818
+    },
+    {
+      "id": "water-adgaon-campus",
+      "name": "MET Bhujbal Campus Free RO Chilled Water Station #6",
+      "category": "water",
+      "lat": 20.0465,
+      "lng": 73.858
+    },
+    {
+      "id": "water-cbs-transit",
+      "name": "CBS Bus Stand Chilled Water Kiosk #7",
+      "category": "water",
+      "lat": 19.994,
+      "lng": 73.784
+    },
+    {
+      "id": "water-gangapur-naka",
+      "name": "Gangapur Naka & Someshwar Water Booth #8",
+      "category": "water",
+      "lat": 20.019,
+      "lng": 73.751
+    },
+    {
+      "id": "stay-trimbakeshwar-bhakt-niwas",
+      "name": "Trimbakeshwar Devasthan Bhakt Niwas Complex",
+      "category": "accommodation",
+      "lat": 19.934,
+      "lng": 73.533
+    },
+    {
+      "id": "stay-maheshwari-bhakt-niwas",
+      "name": "Shree Maheshwari Bhakt Niwas & Dharamshala",
+      "category": "accommodation",
+      "lat": 20.0015,
+      "lng": 73.7935
+    },
+    {
+      "id": "stay-muktidham-bhakt-niwas",
+      "name": "Muktidham Pilgrim Bhakt Niwas Dharamshala",
+      "category": "accommodation",
+      "lat": 19.954,
+      "lng": 73.8348
+    },
+    {
+      "id": "stay-swaminarayan-bhakt-niwas",
+      "name": "BAPS Swaminarayan Pilgrim Resting Bhavan",
+      "category": "accommodation",
+      "lat": 19.992,
+      "lng": 73.812
+    },
+    {
+      "id": "stay-jalaram-bapa-dharamshala",
+      "name": "Jalaram Bapa Trust Dharamshala & Atithi Bhavan",
+      "category": "accommodation",
+      "lat": 20.004,
+      "lng": 73.7915
+    },
+    {
+      "id": "toilet-adgaon-naka",
+      "name": "Adgaon Highway Modern Sanitation Complex #5",
+      "category": "toilet",
+      "lat": 20.0425,
+      "lng": 73.852
+    },
+    {
+      "id": "food-sadhana-misal-gangapur",
+      "name": "Sadhana Chulivarchi Misal",
+      "category": "food",
+      "lat": 20.038,
+      "lng": 73.712
+    },
+    {
+      "id": "food-ambika-misal-panchavati",
+      "name": "Ambika Upahar Kendra (Kala Masala Misal)",
+      "category": "food",
+      "lat": 20.0045,
+      "lng": 73.793
+    },
+    {
+      "id": "food-shamsundar-misal-satpur",
+      "name": "Hotel Shamsundar Misal",
+      "category": "food",
+      "lat": 19.9885,
+      "lng": 73.743
+    },
+    {
+      "id": "food-vihar-delux-cbs",
+      "name": "Hotel Vihar Delux (Pure Veg Multi-Cuisine)",
+      "category": "food",
+      "lat": 19.995,
+      "lng": 73.7825
+    },
+    {
+      "id": "food-modern-cafe-college-road",
+      "name": "Modern Cafe (Pure Veg & Filter Coffee)",
+      "category": "food",
+      "lat": 20.001,
+      "lng": 73.766
+    },
+    {
+      "id": "food-sayantara-bhadrakali",
+      "name": "Sayantara Kachi Dabeli & Sabudana Vada",
+      "category": "food",
+      "lat": 19.9945,
+      "lng": 73.791
+    },
+    {
+      "id": "food-krishna-pureveg-nashikroad",
+      "name": "Hotel Krishna Pure Veg Family Restaurant",
+      "category": "food",
+      "lat": 19.956,
+      "lng": 73.8395
+    },
+    {
+      "id": "food-gurukripa-dhaba-adgaon",
+      "name": "Gurukripa Pure Veg Highway Restaurant & Dhaba",
+      "category": "food",
+      "lat": 20.049,
+      "lng": 73.868
+    },
+    {
+      "id": "food-riverdine-anandvalli",
+      "name": "Riverdine Pure Veg & Family Restaurant",
+      "category": "food",
+      "lat": 20.018,
+      "lng": 73.754
+    },
+    {
+      "id": "stay-gateway-hotel-ambad",
+      "name": "The Gateway Hotel Ambad (IHCL / Taj Group)",
+      "category": "accommodation",
+      "lat": 19.948,
+      "lng": 73.738
+    },
+    {
+      "id": "stay-courtyard-marriott-mumbainaka",
+      "name": "Courtyard by Marriott Nashik",
+      "category": "accommodation",
+      "lat": 19.986,
+      "lng": 73.783
+    },
+    {
+      "id": "stay-express-inn-pathardi",
+      "name": "Hotel Express Inn & Suites",
+      "category": "accommodation",
+      "lat": 19.953,
+      "lng": 73.742
+    },
+    {
+      "id": "stay-radisson-blu-resort",
+      "name": "Radisson Blu Hotel & Resort Nashik",
+      "category": "accommodation",
+      "lat": 19.958,
+      "lng": 73.753
+    },
+    {
+      "id": "stay-panchavati-yatri-cbs",
+      "name": "Hotel Panchavati Yatri (Trusted Family Stay)",
+      "category": "accommodation",
+      "lat": 19.997,
+      "lng": 73.787
+    },
+    {
+      "id": "stay-ibis-satpur-trimbakroad",
+      "name": "Ibis Hotel Nashik",
+      "category": "accommodation",
+      "lat": 19.989,
+      "lng": 73.751
+    },
+    {
+      "id": "stay-green-view-sharanpur",
+      "name": "Hotel Green View (Boutique Garden Stay)",
+      "category": "accommodation",
+      "lat": 19.998,
+      "lng": 73.774
+    },
+    {
+      "id": "stay-tapovan-tent-city",
+      "name": "Kumbh Mela Tapovan Tent City & Swiss Cottages",
+      "category": "accommodation",
+      "lat": 19.996,
+      "lng": 73.824
+    },
+    {
+      "id": "stay-rajmahal-nashikroad",
+      "name": "Hotel Rajmahal Transit Lodge",
+      "category": "accommodation",
+      "lat": 19.9575,
+      "lng": 73.841
+    },
+    {
+      "id": "stay-anand-resort-gangapur",
+      "name": "Anand Green Resort & Farm Stay",
+      "category": "accommodation",
+      "lat": 20.022,
+      "lng": 73.731
+    },
+    {
+      "id": "stay-mtdc-trimbak",
+      "name": "MTDC Holiday Resort Trimbakeshwar",
+      "category": "accommodation",
+      "lat": 19.936,
+      "lng": 73.539
+    }
+  ]
+}

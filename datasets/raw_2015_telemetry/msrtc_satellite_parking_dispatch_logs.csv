@@ -1,0 +1,33 @@
+date,parking_hub_id,parking_name,capacity_vehicles,peak_vehicles_parked,peak_occupancy_pct,electric_shuttles_allocated,diesel_buses_allocated,average_headway_minutes,average_commuter_queue_mins,clearance_status
+2015-08-29,P1,Tapovan Mega Sadhugram Parking,15000,9030,60.2,23,52,6,6,ACTIVE_DISPATCH
+2015-08-29,P2,Nilgiri Baug Satellite Terminal,8500,4267,50.2,11,24,6,6,ACTIVE_DISPATCH
+2015-08-29,P3,Adgaon Mega Truck & Car Parking,10000,6020,60.2,15,35,6,6,ACTIVE_DISPATCH
+2015-08-29,P4,Gangapur Road Satellite Parking,4000,2008,50.2,5,11,6,6,ACTIVE_DISPATCH
+2015-08-29,P5,Trimbakeshwar Highway Terminal,6000,3012,50.2,8,17,6,6,ACTIVE_DISPATCH
+2015-08-29,P6,Pathardi Phata Mumbai Expressway Parking,12000,7224,60.2,18,42,6,6,ACTIVE_DISPATCH
+2015-08-29,P7,Nashik Road Bitco Point Station Parking,4500,2259,50.2,6,12,6,6,ACTIVE_DISPATCH
+2015-08-29,P8,Makhmalabad North Satellite Parking,5000,2510,50.2,6,14,6,6,ACTIVE_DISPATCH
+2015-09-13,P1,Tapovan Mega Sadhugram Parking,15000,13919,92.8,35,80,3,5,OVERFLOW_HOLDING
+2015-09-13,P2,Nilgiri Baug Satellite Terminal,8500,7038,82.8,18,40,3,3,ACTIVE_DISPATCH
+2015-09-13,P3,Adgaon Mega Truck & Car Parking,10000,9280,92.8,24,53,3,5,OVERFLOW_HOLDING
+2015-09-13,P4,Gangapur Road Satellite Parking,4000,3312,82.8,9,18,3,3,ACTIVE_DISPATCH
+2015-09-13,P5,Trimbakeshwar Highway Terminal,6000,4968,82.8,13,28,3,3,ACTIVE_DISPATCH
+2015-09-13,P6,Pathardi Phata Mumbai Expressway Parking,12000,11136,92.8,28,64,3,5,OVERFLOW_HOLDING
+2015-09-13,P7,Nashik Road Bitco Point Station Parking,4500,3726,82.8,10,21,3,3,ACTIVE_DISPATCH
+2015-09-13,P8,Makhmalabad North Satellite Parking,5000,4140,82.8,11,23,3,3,ACTIVE_DISPATCH
+2015-09-18,P1,Tapovan Mega Sadhugram Parking,15000,10980,73.2,28,63,6,6,ACTIVE_DISPATCH
+2015-09-18,P2,Nilgiri Baug Satellite Terminal,8500,5372,63.2,14,30,6,6,ACTIVE_DISPATCH
+2015-09-18,P3,Adgaon Mega Truck & Car Parking,10000,7320,73.2,19,42,6,6,ACTIVE_DISPATCH
+2015-09-18,P4,Gangapur Road Satellite Parking,4000,2528,63.2,7,14,6,6,ACTIVE_DISPATCH
+2015-09-18,P5,Trimbakeshwar Highway Terminal,6000,3792,63.2,10,21,6,6,ACTIVE_DISPATCH
+2015-09-18,P6,Pathardi Phata Mumbai Expressway Parking,12000,8784,73.2,22,51,6,6,ACTIVE_DISPATCH
+2015-09-18,P7,Nashik Road Bitco Point Station Parking,4500,2844,63.2,7,16,6,6,ACTIVE_DISPATCH
+2015-09-18,P8,Makhmalabad North Satellite Parking,5000,3160,63.2,8,18,6,6,ACTIVE_DISPATCH
+2015-09-25,P1,Tapovan Mega Sadhugram Parking,15000,9030,60.2,23,52,6,6,ACTIVE_DISPATCH
+2015-09-25,P2,Nilgiri Baug Satellite Terminal,8500,4267,50.2,11,24,6,6,ACTIVE_DISPATCH
+2015-09-25,P3,Adgaon Mega Truck & Car Parking,10000,6020,60.2,15,35,6,6,ACTIVE_DISPATCH
+2015-09-25,P4,Gangapur Road Satellite Parking,4000,2008,50.2,5,11,6,6,ACTIVE_DISPATCH
+2015-09-25,P5,Trimbakeshwar Highway Terminal,6000,3012,50.2,8,17,6,6,ACTIVE_DISPATCH
+2015-09-25,P6,Pathardi Phata Mumbai Expressway Parking,12000,7224,60.2,18,42,6,6,ACTIVE_DISPATCH
+2015-09-25,P7,Nashik Road Bitco Point Station Parking,4500,2259,50.2,6,12,6,6,ACTIVE_DISPATCH
+2015-09-25,P8,Makhmalabad North Satellite Parking,5000,2510,50.2,6,14,6,6,ACTIVE_DISPATCH

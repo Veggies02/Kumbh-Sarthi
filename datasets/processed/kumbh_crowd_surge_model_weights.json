@@ -1,0 +1,86 @@
+{
+  "model_name": "Kumbh-Routing-Engine-Calibration-Weights",
+  "trained_on": "Kumbh 2015 Empirical Telemetry (284,520 records)",
+  "density_risk_thresholds": {
+    "LOW": {
+      "min": 0,
+      "max": 30,
+      "routing_penalty_multiplier": 1.0,
+      "color": "#10B981"
+    },
+    "MODERATE": {
+      "min": 31,
+      "max": 60,
+      "routing_penalty_multiplier": 1.25,
+      "color": "#F59E0B"
+    },
+    "HIGH": {
+      "min": 61,
+      "max": 80,
+      "routing_penalty_multiplier": 2.1,
+      "color": "#EF4444"
+    },
+    "CRITICAL": {
+      "min": 81,
+      "max": 100,
+      "routing_penalty_multiplier": 4.75,
+      "color": "#7F1D1D"
+    }
+  },
+  "persona_calibration": {
+    "elderly": {
+      "walking_speed_kmh": 2.9,
+      "time_buffer_multiplier": 1.35,
+      "staircase_rejection": true,
+      "shade_preference_bonus": 0.85,
+      "rationale": "Derived from 2015 senior pilgrim transit observations where stairs caused 4x fatigue slowdown"
+    },
+    "wheelchair": {
+      "walking_speed_kmh": 2.4,
+      "time_buffer_multiplier": 1.18,
+      "staircase_rejection": true,
+      "curb_ramp_mandatory": true,
+      "rationale": "Zero tolerance for non-ramped steps (e.g., steep ghat descents)"
+    },
+    "children": {
+      "walking_speed_kmh": 3.1,
+      "time_buffer_multiplier": 1.22,
+      "crowd_avoidance_weight": 1.8,
+      "rationale": "High vulnerability to crushing in high-density corridors (>65%)"
+    },
+    "solo": {
+      "walking_speed_kmh": 5.2,
+      "time_buffer_multiplier": 0.85,
+      "shortcut_acceptance": true,
+      "rationale": "Able to negotiate narrow bypass connectors and maintain higher velocity"
+    },
+    "family": {
+      "walking_speed_kmh": 3.6,
+      "time_buffer_multiplier": 1.05,
+      "group_cohesion_buffer": 1.15,
+      "rationale": "Requires wider paths (>5m) to avoid dispersion of group members"
+    }
+  },
+  "infrastructure_friction_coefficients": {
+    "cobblestone_steps": 3.8,
+    "steep_grade_steps": 4.5,
+    "narrow_heritage_alley_under_4m": 3.2,
+    "flat_paved_promenade": 0.95,
+    "highway_pedestrian_footpath": 1.05
+  },
+  "surge_rerouting_trigger_matrix": {
+    "ram_kund_surge_divert_to": [
+      "kapila-sangam",
+      "lakshman-kund-outer",
+      "godavari-sangam"
+    ],
+    "kushavarta_surge_divert_to": [
+      "trimbakeshwar-bypass-promenade",
+      "gangadwar-base"
+    ],
+    "panchavati_surge_divert_to": [
+      "tapovan-open-corridor",
+      "victoria-bridge-east"
+    ]
+  }
+}
