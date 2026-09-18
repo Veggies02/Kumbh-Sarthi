@@ -54,6 +54,11 @@ interface KumbhContextType {
   // Helpers
   t: (key: keyof Translations) => string;
 
+  // Theme
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  toggleTheme: () => void;
+
   // Actions
   setPersona: (p: TravelPersona) => void;
   setPreference: (pr: RoutePreference) => void;
@@ -109,6 +114,47 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isSurgeActive, setIsSurgeActive] = useState<boolean>(false);
   const [initialAssistantPrompt, setInitialAssistantPrompt] = useState<string>('');
   const [isTrackingLive, setIsTrackingLive] = useState<boolean>(false);
+
+  // Light / Dark Theme State with LocalStorage Persistence
+  const [theme, setThemeState] = useState<'light' | 'dark'>(() => {
+    try {
+      const saved = localStorage.getItem('kumbh_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    } catch {}
+    return 'light';
+  });
+
+  const setTheme = useCallback((newTheme: 'light' | 'dark') => {
+    setThemeState(newTheme);
+    try {
+      localStorage.setItem('kumbh_theme', newTheme);
+    } catch {}
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  }, [theme, setTheme]);
+
+  // Sync html and body class on mount and theme update
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Authentication & Database State
   const [currentUser, setCurrentUser] = useState<UserProfile>(() => kumbhDb.getCurrentUser());
@@ -463,6 +509,9 @@ export const KumbhProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         loginPolice,
         logout,
         t,
+        theme,
+        setTheme,
+        toggleTheme,
         setPersona,
         setPreference,
         setActiveTab,
